@@ -10,7 +10,7 @@ screen_width = 864
 screen_height = 936
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Flappy(ish) Bird')
+pygame.display.set_caption('Flappy Bird Clone')
 
 #Define game vars.
 grnd_scroll = 0
@@ -23,8 +23,8 @@ last_pipe = pygame.time.get_ticks() - pipe_freq
 
 
 #Load images:
-backgrnd_img = pygame.image.load('Flappyish_bird/img/bg.png')
-grnd_img = pygame.image.load('Flappyish_bird/img/ground.png')
+backgrnd_img = pygame.image.load('flappy_bird_clone/img/bg.png')
+grnd_img = pygame.image.load('flappy_bird_clone/img/ground.png')
 
 ###############################################
 #classes:
@@ -35,7 +35,7 @@ class Bird(pygame.sprite.Sprite): #Bird class for all bird images and methods.
         self.index = 0 #Refers back to list and tells which pic. should be shown at particular time.
         self.counter = 0 #Speed at which image changes.
         for num in range(1, 4): #Loop through images in image list.
-            img = pygame.image.load(f'Flappyish_bird/img/bird{num}.png')
+            img = pygame.image.load(f'flappy_bird_clone/img/bird{num}.png')
             self.images.append(img) #Add loaded image to list.
 
         self.image = self.images[self.index]
@@ -85,7 +85,7 @@ class Bird(pygame.sprite.Sprite): #Bird class for all bird images and methods.
 class Pipe(pygame.sprite.Sprite): 
     def __init__(self, x, y, position):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('Flappyish_bird/img/pipe.png')
+        self.image = pygame.image.load('flappy_bird_clone/img/pipe.png')
         self.rect = self.image.get_rect()
 
         #Position 1 is from top, -1 is from bottom:

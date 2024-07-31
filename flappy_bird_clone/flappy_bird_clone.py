@@ -26,6 +26,7 @@ last_pipe = pygame.time.get_ticks() - pipe_freq
 backgrnd_img = pygame.image.load('flappy_bird_clone/img/bg.png')
 grnd_img = pygame.image.load('flappy_bird_clone/img/ground.png')
 
+
 ###############################################
 #classes:
 class Bird(pygame.sprite.Sprite): #Bird class for all bird images and methods.
@@ -101,8 +102,6 @@ class Pipe(pygame.sprite.Sprite):
 
 
 ###############################################
-
-
 bird_group = pygame.sprite.Group() #Keeps track of all sprites given to it.
 pipe_group = pygame.sprite.Group()
 

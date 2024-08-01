@@ -8,7 +8,7 @@ clock = pygame.time.Clock()
 fps = 60
 
 screen_width = 864
-screen_height = 936
+screen_height = 760
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Flappy Bird Clone')
@@ -34,11 +34,20 @@ pass_pipe = False
 #Load images:
 backgrnd_img = pygame.image.load('flappy_bird_clone/img/bg.png')
 grnd_img = pygame.image.load('flappy_bird_clone/img/ground.png')
+btn_img = pygame.image.load('flappy_bird_clone/img/restart.png')
 
 #Draw text:
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
+
+#Reset Game:
+def reset_game():
+    pipe_group.empty()
+    flappy.rect.x = 100
+    flappy.rect.y = int(screen_height/2)
+    score = 0
+    return score
 
 
 ###############################################
@@ -67,7 +76,7 @@ class Bird(pygame.sprite.Sprite): #Bird class for all bird images and methods.
             if self.vel > 8:
                 self.vel = 8
 
-            if self.rect.bottom < 768:
+            if self.rect.bottom < 700:
                 self.rect.y += int(self.vel)
 
         if game_over == False:
@@ -114,7 +123,25 @@ class Pipe(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.kill()
 
+class Button():
+    def __init__(self, x, y, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
 
+    def draw(self):
+        action = False
+        #Get mouse position:
+        pos = pygame.mouse.get_pos()
+        #Check if mouse is over btn:
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                action = True
+        #Draw btn:
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+        return action
+    
 
 ###############################################
 bird_group = pygame.sprite.Group() #Keeps track of all sprites given to it.
@@ -123,6 +150,7 @@ pipe_group = pygame.sprite.Group()
 flappy = Bird(100, int(screen_height / 2))
 bird_group.add(flappy) #Add sprites to group.
 
+btn = Button(screen_width//2-50, screen_height//2-100, btn_img)
 
 run = True
 while run:
@@ -139,7 +167,7 @@ while run:
     #pipe_group.update()
 
     #Draw the ground:
-    screen.blit(grnd_img, (grnd_scroll, 768))
+    screen.blit(grnd_img, (grnd_scroll, 700))
 
     #Check score:
     if len(pipe_group) > 0:
@@ -160,7 +188,7 @@ while run:
         game_over = True
 
     #Check if bird has hit the ground:
-    if flappy.rect.bottom > 768:
+    if flappy.rect.bottom > 700:
         game_over = True
         flying = False
 
@@ -182,6 +210,12 @@ while run:
             grnd_scroll = 0
         
         pipe_group.update()
+
+    #Check for game over & reset:
+    if game_over == True:
+        if btn.draw() == True:
+            game_over = False
+            score = reset_game()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
